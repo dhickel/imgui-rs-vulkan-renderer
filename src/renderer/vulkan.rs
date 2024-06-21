@@ -327,7 +327,7 @@ mod texture {
     /// Helper struct representing a sampled texture.
     pub struct Texture {
         pub image: vk::Image,
-        image_mem: Memory,
+        pub image_mem: Memory,
         pub image_view: vk::ImageView,
         pub sampler: vk::Sampler,
     }
