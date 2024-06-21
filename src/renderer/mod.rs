@@ -85,6 +85,15 @@ pub struct Renderer {
 }
 
 impl Renderer {
+    
+    pub fn destroy(&self) {
+        unsafe {
+            self.device.destroy_descriptor_set_layout(self.descriptor_set_layout, None);
+            self.device.destroy_descriptor_pool(self.descriptor_pool, None);
+            self.device.destroy_pipeline_layout(self.pipeline_layout, None);
+            self.device.destroy_pipeline(self.pipeline, None);
+        }
+    }
     /// Initialize and return a new instance of the renderer.
     ///
     /// At initialization all Vulkan resources are initialized and font texture is created and
