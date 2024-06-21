@@ -92,13 +92,35 @@ impl Renderer {
     
     pub fn destroy(&mut self) {
         unsafe {
-            if let Some(texture) = &self.fonts_texture {
-                self.device.destroy_image_view(texture.image_view, None);
+            unsafe {
+                if let Some(frames) = self.frames.take() {
+                    frames
+                        .destroy(&self.device, &mut self.allocator)
+                        .expect("Failed to destroy frame data");
+                }
+                &self.device.destroy_pipeline(self.pipeline, None);
+                &self.device.destroy_pipeline_layout(self.pipeline_layout, None);
+                &self.device.destroy_descriptor_pool(self.descriptor_pool, None);
+                self.fonts_texture
+                    .take()
+                    .unwrap()
+                    .destroy(&self.device, &mut self.allocator)
+                    .expect("Failed to fronts data");
+                &self.device.destroy_descriptor_set_layout(self.descriptor_set_layout, None);
             }
-            self.device.destroy_descriptor_set_layout(self.descriptor_set_layout, None);
-            self.device.destroy_descriptor_pool(self.descriptor_pool, None);
-            self.device.destroy_pipeline_layout(self.pipeline_layout, None);
-            self.device.destroy_pipeline(self.pipeline, None);
+            // if let Some(texture) = &self.fonts_texture {
+            //     self.device.destroy_image_view(texture.image_view, None);
+            // }
+            // if let Some(frames) = &self.frames {
+            //     for mesh in frames.meshes.as_slice() {
+            //         *(mesh.destroy(&self.device, &mut self.allocator).unwrap());
+            //     }
+            // }
+            // 
+            // self.device.destroy_descriptor_set_layout(self.descriptor_set_layout, None);
+            // self.device.destroy_descriptor_pool(self.descriptor_pool, None);
+            // self.device.destroy_pipeline_layout(self.pipeline_layout, None);
+            // self.device.destroy_pipeline(self.pipeline, None);
         }
     }
     /// Initialize and return a new instance of the renderer.
