@@ -72,6 +72,7 @@
 //!
 //! ```rust
 //! // Example with default allocator
+//! use imgui_rs_vulkan_renderer::Renderer;
 //! let renderer = Renderer::with_default_allocator(
 //!     &instance,
 //!     physical_device,
